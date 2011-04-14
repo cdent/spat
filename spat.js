@@ -10,15 +10,20 @@ $(function() {
         var errorHandler = function(xhr, status, exc) {
             notify("failure", status);
         };
+
+        var setTitle = function(tiddler) {
+            $('#title').text(tiddler.title);
+            $('title').text(tiddler.title);
+        };
         
         var displayTiddler = function(tiddler) {
-            console.log(tiddler);
             var tiddlerSection = $('<section class="tiddler">')
                 .text(tiddler.text);
             $("article").append(tiddlerSection);
         };
 
         var formatTiddler = function(tiddler) {
+            setTitle(tiddler);
             var recipe = tiddler.recipe.name;
             var collection_uri = tiddler.recipe.route() + '/tiddlers.json';
 
@@ -44,7 +49,6 @@ $(function() {
                     url:  collection_uri + '?fat=1',
                     type: 'GET',
                     success: function(data, status, xhr) {
-                        console.log(collection_uri, data);
                         twik.loadRemoteTiddlers(store, Tiddler, collection_uri, data);
                         wikify(tiddler.text, $("article")
                             .append('<section class="tiddler">')[0], null, null);
